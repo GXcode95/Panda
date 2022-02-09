@@ -22,73 +22,83 @@ const useProvideAuth = ()  => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate()
   
+  const errorMessage = (error, defaultMessage) => {
+    const noResponseFromServer = "Une erreur est survenue, veuillez réessayer dans quelques minutes."
+  
+    if(error.response)
+      error.response.data ? alert(error.response.data.message) : alert(defaultMessage)
+    else
+      alert(noResponseFromServer)
+  }
+  
   // All methods related to auth here, have to update the user 
   const signup = async (email, password, passwordConfirmation) => {
-    if(password != passwordConfirmation) return 
+    if(password != passwordConfirmation) {
+      alert("Le mot de passe et la confirmation du mot de passe sont différents.")
+      return
+    } 
+
     const user = {email,password}
     try {
       const response = await axios.post('/users', { user })
-      // console.log("#signup", response.data)
-      if (response.headers.authorization) Cookies.set("jwt", response.headers.authorization)
+      if (response.headers.authorization)
+        Cookies.set("jwt", response.headers.authorization)
+      
       setUser(response.data.user)
       navigate('/')
     } catch (error) {
-      console.log("#signup",error)
+      errorMessage(error, "Imposssible de s'inscrire.")
+      // handleError(error)
     }
   }
 
   const signin = async (email, password) => {
     const user = {email,password}
-    console.log("#signin")
-    try {
+    try{
       const response = await axios.post('/users/sign_in', {user})
-      // console.log("#signin", response.data)
-      if (response.headers.authorization) Cookies.set("jwt", response.headers.authorization)
+      if (response.headers.authorization) 
+        Cookies.set("jwt", response.headers.authorization)
+
       setUser(response.data.user)
       navigate('/')
-
     } catch (error){
-      console.log( error)
+      errorMessage(error, "Impossible de se connecter.")
+      // handleError(error)
     }
   }
  
   const signout = async () => {
-    console.log("#signout")
     try {
-      const { data } = await axios.delete('/users/sign_out',{
+      await axios.delete('/users/sign_out',{
         headers: {
           'Authorization': `${Cookies.get("jwt")}`,
         },
       })
-      // console.log("#signout", data)
       Cookies.remove('jwt')
+      setUser(null)
       navigate('/Login')
     } catch (error) {
-      console.log(error)
+      errorMessage(error, 'Impossible de se déconnecter.')
+      // HandleError(error)
     }
   }
 
   // Connect user with JWT is a jwt is set in cookies
   useLayoutEffect(() => {
     const jwt = Cookies.get("jwt")
-    console.log("#singinWithJwt",jwt)
-    console.log(typeof jwt)
-    if (jwt) {
+    if (!jwt) return
+
+    try {
       const loginWithToken = async () => {
         const {data} = await axios.post("/users/sign_in",{
           headers: {
             'Authorization': `${jwt}`,
           },
         })
-        console.log(data)
         setUser(data.user)
       }
-    console.log("#singinWithJwt",jwt)
-
       loginWithToken()
-    }
-    console.log("#singinWithJwt",jwt)
-
+    } catch (error) { /* handleError(error) */ }
   }, [])
 
   // Return the user object and auth methods
@@ -100,3 +110,22 @@ const useProvideAuth = ()  => {
   };
 
 }
+
+const handleError = (error) => {
+  console.log("###########  Error  ###########")
+  if(error.response) {
+    // The request was made and the server responded with a status code != of 2xx
+    console.log(error.response.data)
+    console.log(error.response.status)
+    console.log(error.response.headers)
+  } else if (error.request) {
+    // The request was made but no response was received.
+    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in Node.js
+    console.log(error.request)
+  } else {
+    console.log('Error => ',error.message)
+  }
+  console.log(error)
+  console.log("---------  End Error  ---------")
+}
+
