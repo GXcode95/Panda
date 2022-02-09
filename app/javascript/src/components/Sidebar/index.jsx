@@ -56,6 +56,11 @@ const Sidebar = () => {
                 Accueil
               </Link>
             </MenuItem>
+            <MenuItem icon={<MenuIcon  />}>
+              <Link to="/session">
+                Sessions
+              </Link>
+            </MenuItem>
 
             {user ? 
               <SubMenu 
