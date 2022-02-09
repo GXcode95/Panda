@@ -37,14 +37,13 @@ const CourseCard = ({course, theme, structure, initiation}) => {
 
   return (
 
-      <Box className="Course" borderColor={theme.color} bgcolor={theme.color}>
+      <Box className="CourseCard" borderColor={theme.color} bgcolor={theme.color}>
         <Box className="title" bgcolor={theme.color} borderColor={theme.color}  p={1}>
           <div className="overlay"/>
           <Typography align="center" fontSize="22px" color="white">
             {initiation.name}
           </Typography>
         </Box>
-        <button>SUB</button>
         <Typography align="center" fontSize="22px" color="white" py={0.3} px={0.6}>
           {parseDate(course.date)}, 
           <Tooltip title={<h3>{structure.address}</h3>}>

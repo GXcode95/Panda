@@ -5,9 +5,9 @@
   gap:1rem;
 }
 
-.Course {
+.CourseCard {
   min-height: 100%;
-  width: 350px;
+  width: 300px;
   overflow: hidden;
   
   display: flex;
@@ -20,7 +20,6 @@
   border: 3px solid;
   box-shadow: 1px 1px 7px black;
   
-  animation: 1s fade-in;
   
   .title {
     width: 100%;
@@ -40,10 +39,11 @@
   }
 
   .footer {
-    padding: 0 2rem 1rem;
+    padding-bottom: 1rem;
     display: flex;
     align-items: center;
-    width: 100%;
+    width: 90%;
+    margin-left: 5%;
 
     button {
       flex: 1;
@@ -86,9 +86,4 @@
       }
     }
   }
-}
-
-@keyframes fade-in {
-  from {opacity: 0}
-  to {opacity: 1}
 }

@@ -34,7 +34,7 @@ const Sidebar = () => {
         image={siderbarImg} // set on false for classic bg
         collapsed={collapsed}
         toggled={toggled}
-        breakPoint="md"
+        breakPoint="sm"
         onToggle={handleToggleSidebar}
       >
         <SidebarHeader>
@@ -78,10 +78,15 @@ const Sidebar = () => {
         </SidebarContent>
       </ProSidebar>
 
+      
       <IconButton 
-        className="toggle-sidebar-btn"
         onClick={handleToggleSidebar}
-        sx={{display:{xs: "block", sm:"none"}}}
+        sx={{
+          position: "absolute", 
+          top: 0, left: 0, 
+          zIndex: 10,
+          display: {xs: "block", sm: "none"},
+        }}
       >
         <MenuIcon />
       </IconButton>
