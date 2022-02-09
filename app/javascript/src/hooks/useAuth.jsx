@@ -26,7 +26,7 @@ const useProvideAuth = ()  => {
     const noResponseFromServer = "Une erreur est survenue, veuillez réessayer dans quelques minutes."
   
     if(error.response)
-      error.response.data ? alert(error.response.data.message) : alert(defaultMessage)
+      error.response.data ? alert(error.response.data.error) : alert(defaultMessage)
     else
       alert(noResponseFromServer)
   }
