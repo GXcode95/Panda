@@ -10,9 +10,84 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 2022_02_09_135311) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "courses", force: :cascade do |t|
+    t.datetime "date"
+    t.bigint "structure_id", null: false
+    t.integer "max_subscriptions"
+    t.boolean "collective"
+    t.boolean "reservation"
+    t.bigint "initiation_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["initiation_id"], name: "index_courses_on_initiation_id"
+    t.index ["structure_id"], name: "index_courses_on_structure_id"
+  end
+
+  create_table "initiations", force: :cascade do |t|
+    t.string "name"
+    t.integer "level"
+    t.bigint "theme_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["theme_id"], name: "index_initiations_on_theme_id"
+  end
+
+  create_table "jwt_denylist", force: :cascade do |t|
+    t.string "jti", null: false
+    t.datetime "exp", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["jti"], name: "index_jwt_denylist_on_jti"
+  end
+
+  create_table "structures", force: :cascade do |t|
+    t.string "name"
+    t.string "address"
+    t.string "email", default: "centremultimedia@outlook.com"
+    t.string "social_reason"
+    t.string "supervisor"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "course_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["course_id"], name: "index_subscriptions_on_course_id"
+    t.index ["user_id"], name: "index_subscriptions_on_user_id"
+  end
+
+  create_table "themes", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "color", default: "rgb(48,48,48)"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "status", default: 0
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  add_foreign_key "courses", "initiations"
+  add_foreign_key "courses", "structures"
+  add_foreign_key "initiations", "themes"
+  add_foreign_key "subscriptions", "courses"
+  add_foreign_key "subscriptions", "users"
 end
