@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from "react"
-import Research from "./Research.js"
-import CourseCard from './CourseCard.js'
+import Research from "../../components/CourseResearch"
+import CourseCard from '../../components/CourseCard'
 import axios from "axios"
 const Courses = () => {
   const [courses,setCourses] = useState()
