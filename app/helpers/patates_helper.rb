@@ -1,0 +1,2 @@
+module PatatesHelper
+end
