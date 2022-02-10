@@ -12,15 +12,17 @@ class Users::SessionsController < Devise::SessionsController
     render json: { message: 'Connecté !', user: current_user }, status: :ok
   end
   def log_in_failure
-    render json: { error: 'Email ou mot de passe incorrect'}, status: :unauthorized
+    render json: { error: 'Email ou mot de passe incorrect'}, status: :ok
   end
   def respond_to_on_destroy
-    current_user ? log_out_success : log_out_failure
+    log_out_success && return if current_user
+
+    log_out_failure
   end
   def log_out_success
     render json: { message: "Déconnecté !" }, status: :ok
   end
   def log_out_failure
-    render json: { error: "Impossible de se déconnecter."}, status: :unauthorized
+    render json: { error: "Impossible de se déconnecter."}, status: :ok
   end
 end

@@ -159,7 +159,7 @@ def seedCourses(nb)
   end
 end
 
-# seedThemes()
-# seedStructures()
-# seedInitiations()
-seedCourses(10)
+seedThemes()
+seedStructures()
+seedInitiations()
+seedCourses(20)

@@ -49,7 +49,7 @@ const useProvideAuth = ()  => {
       navigate('/')
     } catch (error) {
       errorMessage(error, "Imposssible de s'inscrire.")
-      // handleError(error)
+      handleError(error)
     }
   }
 
@@ -64,7 +64,7 @@ const useProvideAuth = ()  => {
       navigate('/')
     } catch (error){
       errorMessage(error, "Impossible de se connecter.")
-      // handleError(error)
+      handleError(error)
     }
   }
  
@@ -77,10 +77,10 @@ const useProvideAuth = ()  => {
       })
       Cookies.remove('jwt')
       setUser(null)
-      navigate('/Login')
+      navigate('/connection')
     } catch (error) {
       errorMessage(error, 'Impossible de se déconnecter.')
-      // HandleError(error)
+      handleError(error)
     }
   }
 
@@ -112,7 +112,7 @@ const useProvideAuth = ()  => {
         getSubscriptions()
       }
       loginWithToken()
-    } catch (error) { /* handleError(error) */ }
+    } catch (error) {  handleError(error) }
   }, [])
 
   // Return the user object and auth methods
