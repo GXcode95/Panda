@@ -1,9 +1,4 @@
-json.courses @courses, :id, :collective, :reservation, :date, :max_subscriptions, :initiation_id, :structure_id, :subscriptions
-json.themes @themes, :id, :name, :color
-json.structures @structures, :id, :name, :address
-json.initiations @initiations, :id, :name, :level, :theme_id
-
-json.datax @courses do |course|
+json.courses @courses do |course|
   json.id course.id
   json.collective course.collective
   json.reservation course.reservation

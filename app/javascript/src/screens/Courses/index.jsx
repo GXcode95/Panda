@@ -25,7 +25,6 @@ const Courses = () => {
   }
 
   const getCourseTheme = (course) => {
-    console.log("ezfz",getCourseInitiation(course))
     return themes.find(obj => { 
       return obj.id === getCourseInitiation(course).theme_id
     })
