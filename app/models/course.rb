@@ -15,15 +15,20 @@ class Course < ApplicationRecord
   end
 
   def subscribers
-    self.subscriptions.map do |subscription|
+    subscriptions.map do |subscription|
       subscription.user
     end
   end
 
   def subscribers_ids
-    self.subscribers.map do |subscriber|
+    subscribers.map do |subscriber|
       subscriber.id
     end
   end
+
+  def is_full?
+    subscribers.length === self.max_subscriptions
+  end
+
 
 end

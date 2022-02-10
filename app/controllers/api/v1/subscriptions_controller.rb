@@ -17,9 +17,22 @@ class Api::V1::SubscriptionsController < ApplicationController
     end
   end
 
+  def destroy
+    puts "3"*100
+    @subscription = Subscription.find(params[:id])
+    if current_user.id === @subscription.user.id
+      @subscription.destroy
+      render json: {message: "Inscription annulé."}
+    else 
+      render json: {error: "Vous n'êtes pas autoriser à faire ça."}
+    end
+    puts "3"*100
+
+  end
+
   private
     def subscription_params
-      params.require(:subscription).permit(:course_id)
+      params.require(:subscription).permit(:id, :course_id)
     end
 
 end

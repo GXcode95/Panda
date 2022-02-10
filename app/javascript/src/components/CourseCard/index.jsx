@@ -27,7 +27,7 @@ const parseDate = (strDate) => {
 }
 
 const CourseCard = ({course, theme, structure, initiation}) => {
-  const { isSubscribed } = useAuth()
+  const { isSubscribed, subscriptions, getSubscriptions } = useAuth()
 
   const handleSub = async () => {
     try {
@@ -36,9 +36,30 @@ const CourseCard = ({course, theme, structure, initiation}) => {
           course_id: course.id
         }
       })
-      data.error ? alert(data.error) : alert(data.message)
+      if(data.error){
+        alert(data.error)
+      } else {
+        alert(data.message)
+        getSubscriptions()
+      }
     } catch (error) {
       errorMessage(error, "Inscription impossible, veuillez réesayer dans quelques minutes.")
+    }
+      
+  }
+
+  const handleUnsub = async () => {
+    try {
+      const subscriptionId = subscriptions.find(sub => sub.course_id === course.id).id
+      const {data} = await axios.delete(`/api/v1/subscriptions/${subscriptionId}.json`)
+      if(data.error){
+        alert(data.error)
+      } else {
+        alert(data.message)
+        getSubscriptions()
+      }
+    } catch (error) {
+      errorMessage(error, "Une erreur est survenue")
     }
       
   }
@@ -59,7 +80,11 @@ const CourseCard = ({course, theme, structure, initiation}) => {
       </Typography>
 
       <Box className="footer" gap={1}>
-        <Button variant="contained"  sx={{bgcolor: theme.color}}  onClick={handleSub}>
+        <Button 
+          variant="contained"
+          sx={{bgcolor: theme.color}}
+          onClick={isSubscribed(course) ? handleUnsub : handleSub}
+          >
           {isSubscribed(course) ? "Annuler" : "S'inscrire"}
         </Button>
         <Typography align="center" fontSize="20px" px={1} color="white"> 

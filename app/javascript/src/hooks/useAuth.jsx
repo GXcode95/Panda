@@ -84,6 +84,7 @@ const useProvideAuth = ()  => {
     }
   }
 
+  //? Neccessary ?
   const getSubscriptions = async () => {
     try {
       const {data} = await axios.get('/api/v1/subscriptions.json')
