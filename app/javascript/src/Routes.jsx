@@ -11,7 +11,7 @@ const RouteList = () => {
   return <Routes>
     <Route path="/" exact element={<Home />} />
     <Route path="/connection" exact element={<Login />} />
-    <Route path="/session" exact element={<Courses />} />
+    <Route path="/sessions" exact element={<Courses />} />
     <Route path="/*" element={<NotFound />} />
   </Routes>
 }

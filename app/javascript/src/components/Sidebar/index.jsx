@@ -48,7 +48,7 @@ const Sidebar = () => {
             </button>
           </div>
         </SidebarHeader>
-                {console.log("user",user)}
+
         <SidebarContent>
           <Menu iconShape="circle">
             <MenuItem icon={<MenuIcon  />}>
@@ -57,7 +57,7 @@ const Sidebar = () => {
               </Link>
             </MenuItem>
             <MenuItem icon={<MenuIcon  />}>
-              <Link to="/session">
+              <Link to="/sessions">
                 Sessions
               </Link>
             </MenuItem>
@@ -72,18 +72,16 @@ const Sidebar = () => {
               </SubMenu>
               :
               <MenuItem icon={<MenuIcon  />}>
-                <Link to="/Login">
+                <Link to="/connection">
                   Se connecter
                 </Link>
               </MenuItem>
             }
-            
-
           </Menu>
         </SidebarContent>
       </ProSidebar>
 
-      
+      {/* button to display when sidebar is toggleed */}
       <IconButton 
         onClick={handleToggleSidebar}
         sx={{

@@ -60,7 +60,7 @@ gem 'table_print'
 gem 'simple_form'
 gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'master'
 gem 'rack-cors'
-gem 'react-rails'
+#gem 'react-rails'
 gem 'devise'
 gem 'devise-jwt'
 gem 'dotenv-rails', groups: [:development, :test]
