@@ -12,21 +12,21 @@ const Courses = () => {
   const [selectedTheme, setSelectedTheme] = useState(null)
   const [selectedStructure, setSelectedStructure] = useState(null)
 
-  const getCourseStructure = (course) => {
+  const findCourseStructure = (course) => {
     return structures.find(obj => { 
       return obj.id === course.structure_id
     })
   }
 
-  const getCourseInitiation = (course) => {
+  const findCourseInitiation = (course) => {
     return initiations.find(obj => { 
       return obj.id === course.initiation_id
     })
   }
 
-  const getCourseTheme = (course) => {
+  const findCourseTheme = (course) => {
     return themes.find(obj => { 
-      return obj.id === getCourseInitiation(course).theme_id
+      return obj.id === course.theme_id
     })
   }
 
@@ -38,17 +38,13 @@ const Courses = () => {
 
         const initiationsResponse = await axios.get('/api/v1/initiations.json')
         setInitiations(initiationsResponse.data)
-        console.log("INITIATION ==>", initiationsResponse)
+
         const themesResponse = await axios.get('/api/v1/themes.json')
         setThemes(themesResponse.data)
-        console.log("themes ==>", themesResponse)
 
         console.log("Structures ==>", structuresResponse)
         const coursesResponse = await axios.get('/api/v1/courses.json')
-        console.log(coursesResponse)
-        // setStructures(coursesResponse.data.structures)
-        // setInitiations(coursesResponse.data.initiations)
-        // setThemes(coursesResponse.data.themes)
+
         setSortedCourses(coursesResponse.data.courses)
         setCourses(coursesResponse.data.courses)
       } catch (error){
@@ -61,7 +57,7 @@ const Courses = () => {
   useEffect(()=> {
     if (selectedTheme) {
       setSortedCourses(courses.filter(course =>
-        getCourseTheme(course).id === selectedTheme.id
+        course.theme_id === selectedTheme.id
       ))
       setSelectedStructure(null)
     } 
@@ -70,7 +66,7 @@ const Courses = () => {
   useEffect(()=> {
     if (selectedStructure) {
       setSortedCourses(courses.filter(course =>
-        getCourseStructure(course).id === selectedStructure.id
+        course.structure_id === selectedStructure.id
       ))
       setSelectedTheme(null)
     }
@@ -100,9 +96,9 @@ const Courses = () => {
           <CourseCard
             key={course.id}
             course={course}
-            structure={getCourseStructure(course)}
-            initiation={getCourseInitiation(course)}
-            theme={getCourseTheme(course)}
+            structure={findCourseStructure(course)}
+            initiation={findCourseInitiation(course)}
+            theme={findCourseTheme(course)}
           />
       )}
       </div>

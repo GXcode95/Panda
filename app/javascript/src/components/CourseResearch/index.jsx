@@ -9,6 +9,14 @@ const Research = ({themes, structures, courses}) => {
     shortName.shift()
     return shortName.join(' ')
   }
+
+  const isSelectedStructure = (structure) => {
+    return structure.id === structures.selected
+  }
+
+  const isSelectedTheme = (theme) => {
+    return theme.id === themes.selected
+  }
   
   return (
     <div className="Research">
@@ -17,7 +25,8 @@ const Research = ({themes, structures, courses}) => {
       </p>
       <Box className="chips-wrapper" >
         {themes.list.map(theme => 
-          <div className={`chip ${theme.id === themes.selected && "active" }`}
+          <div 
+            className={`chip ${isSelectedTheme(theme) && "active" }`}
             key={theme.id}
             style={{ backgroundColor: theme.color}}
             onClick={e=>themes.set(theme)}
@@ -30,7 +39,8 @@ const Research = ({themes, structures, courses}) => {
       </p>
       <Box className="chips-wrapper" >
         {structures.list.map(structure => 
-          <div className={`chip ${structure.id === structures.selected && "active" }`}
+          <div 
+            className={`chip ${ isSelectedStructure(structure) && "active" }`}
             key={structure.id}
             style={{ backgroundColor: 'cyan'}}
             onClick={e=> structures.set(structure)}

@@ -8,7 +8,6 @@ json.courses @courses do |course|
   
   json.initiation_id course.initiation_id
   json.structure_id course.structure_id
-  json.theme course.theme.id
+  json.theme_id course.theme.id
   json.subscribers course.subscribers_ids
-  
 end
