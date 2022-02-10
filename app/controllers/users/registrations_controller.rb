@@ -6,7 +6,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     resource.persisted? ? register_success : register_failed
   end
   def register_success
-    render json: { message: 'Signed up.' }
+    render json: { message: 'Signed up.', user: current_user }
   end
   def register_failed
     render json: { message: "Signed up failure." }
