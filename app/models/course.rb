@@ -7,11 +7,23 @@ class Course < ApplicationRecord
   has_one :theme, through: :initiation
 
   def date_in_letter
-    "le " + date.strftime("%A") + " " + date.day.to_s + " " + date.strftime("%B") +"."
+    date.strftime("%A") + " " + date.day.to_s + " " + date.strftime("%B") 
   end
 
   def time 
-     "#{date.strftime("%H")}H#{date.strftime("%M")}"
+    "#{date.strftime("%H")}H#{date.strftime("%M")}"
+  end
+
+  def subscribers
+    self.subscriptions.map do |subscription|
+      subscription.user
+    end
+  end
+
+  def subscribers_ids
+    self.subscribers.map do |subscriber|
+      subscriber.id
+    end
   end
 
 end

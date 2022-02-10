@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get 'structures/index'
+  get 'initiations/index'
+  get 'themes/index'
   root 'pages#home'
   
   devise_for :users,
