@@ -12,9 +12,8 @@ class Api::V1::SubscriptionsController < ApplicationController
     if @subscription.save
       render json: { message: "Inscrit avec success" }, status: :ok
     else
-      puts "*"*1000
       puts @subscription.errors.messages
-      render json: { error_message: "Impossible de compléter l'inscription veuillez réessayer" }, status: :unprocessable_entity
+      render json: { error: @subscription.errors.full_messages.first }
     end
   end
 

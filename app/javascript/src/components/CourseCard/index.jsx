@@ -2,7 +2,14 @@ import React from 'react'
 import { Box, Button, Typography, Tooltip } from '@mui/material'
 import axios from 'axios'
 
+const errorMessage = (error, defaultMessage) => {
+  const noResponseFromServer = "Une erreur est survenue, veuillez réessayer dans quelques minutes."
 
+  if(error.response)
+    error.response.data ? alert(error.response.data.error) : alert(defaultMessage)
+  else
+    alert(noResponseFromServer)
+}
 const parseDate = (strDate) => {
   const months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
   'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
@@ -26,12 +33,17 @@ const CourseCard = ({course, theme, structure, initiation}) => {
   }
 
   const handleSub = async () => {
-    const res = await axios.post('/api/v1/subscriptions.json', {
-      subscription: {
-        course_id: course.id
-      }
-    })
-    console.log("response",res)
+    try {
+      const {data} = await axios.post('/api/v1/subscriptions.json', {
+        subscription: {
+          course_id: course.id
+        }
+      })
+      data.error ? alert(data.error) : alert(data.message)
+    } catch (error) {
+      errorMessage(error, "Inscription impossible, veuillez réesayer dans quelques minutes.")
+    }
+      
   }
 
 
