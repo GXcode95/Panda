@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-  get 'structures/index'
-  get 'initiations/index'
-  get 'themes/index'
   root 'pages#home'
   
   devise_for :users,
@@ -14,6 +11,9 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :courses, only: [:index]
       resources :subscriptions, only: [:index, :create, :destroy]
+      resources :structures, only: [:index]
+      resources :themes, only: [:index]
+      resources :initiations, only: [:index]
     end
   end
 

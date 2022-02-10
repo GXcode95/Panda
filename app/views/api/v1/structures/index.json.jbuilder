@@ -1,0 +1,1 @@
+json.array! @structures, :id, :name, :address, :email, :social_reason

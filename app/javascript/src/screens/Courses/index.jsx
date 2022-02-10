@@ -25,6 +25,7 @@ const Courses = () => {
   }
 
   const getCourseTheme = (course) => {
+    console.log("ezfz",getCourseInitiation(course))
     return themes.find(obj => { 
       return obj.id === getCourseInitiation(course).theme_id
     })
@@ -33,14 +34,24 @@ const Courses = () => {
   useLayoutEffect(()=> {
     const getSessions = async () => {
       try {
+        const structuresResponse = await axios.get('/api/v1/structures.json')
+        setStructures(structuresResponse.data)
 
-        const response = await axios.get('/api/v1/courses.json')
-        console.log(response)
-        setStructures(response.data.structures)
-        setInitiations(response.data.initiations)
-        setThemes(response.data.themes)
-        setSortedCourses(response.data.courses)
-        setCourses(response.data.courses)
+        const initiationsResponse = await axios.get('/api/v1/initiations.json')
+        setInitiations(initiationsResponse.data)
+        console.log("INITIATION ==>", initiationsResponse)
+        const themesResponse = await axios.get('/api/v1/themes.json')
+        setThemes(themesResponse.data)
+        console.log("themes ==>", themesResponse)
+
+        console.log("Structures ==>", structuresResponse)
+        const coursesResponse = await axios.get('/api/v1/courses.json')
+        console.log(coursesResponse)
+        // setStructures(coursesResponse.data.structures)
+        // setInitiations(coursesResponse.data.initiations)
+        // setThemes(coursesResponse.data.themes)
+        setSortedCourses(coursesResponse.data.courses)
+        setCourses(coursesResponse.data.courses)
       } catch (error){
         console.log(error.message)
       }

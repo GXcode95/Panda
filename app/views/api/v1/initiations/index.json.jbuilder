@@ -1,0 +1,1 @@
+json.array! @initiations, :id, :name, :level, :theme_id
