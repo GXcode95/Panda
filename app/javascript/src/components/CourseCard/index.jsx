@@ -1,6 +1,8 @@
 import React from 'react'
 import { Box, Button, Typography, Tooltip } from '@mui/material'
 import axios from 'axios'
+import { useAuth } from '../../hooks/useAuth'
+
 
 const errorMessage = (error, defaultMessage) => {
   const noResponseFromServer = "Une erreur est survenue, veuillez réessayer dans quelques minutes."
@@ -25,12 +27,7 @@ const parseDate = (strDate) => {
 }
 
 const CourseCard = ({course, theme, structure, initiation}) => {
-  const logs = () => {
-      console.log("course:", course)
-      console.log("theme", theme)
-      console.log("structure", structure)
-      console.log("initiation",initiation)
-  }
+  const { isSubscribed } = useAuth()
 
   const handleSub = async () => {
     try {
@@ -46,33 +43,30 @@ const CourseCard = ({course, theme, structure, initiation}) => {
       
   }
 
-
   return (
-
-      <Box className="CourseCard" borderColor={theme.color} bgcolor={theme.color}>
-        <Box className="title" bgcolor={theme.color} borderColor={theme.color}  p={1}>
-          <div className="overlay"/>
-          <Typography align="center" fontSize="22px" color="white">
-            {initiation.name}
-          </Typography>
-        </Box>
-        <Typography align="center" fontSize="22px" color="white" py={0.3} px={0.6}>
-          {parseDate(course.date)}, 
-          <Tooltip title={<h3>{structure.address}</h3>}>
-            <span className="bold"> au {structure.name} </span>
-          </Tooltip>
+    <Box className="CourseCard" borderColor={theme.color} bgcolor={theme.color}>
+      <Box className="title" bgcolor={theme.color} borderColor={theme.color}  p={1}>
+        <div className="overlay"/>
+        <Typography align="center" fontSize="22px" color="white">
+          {initiation.name}
         </Typography>
-
-        <Box className="footer" gap={1}>
-          <Button variant="contained"  sx={{bgcolor: theme.color}}  onClick={handleSub}>
-            S'inscrire
-          </Button>
-          <Typography align="center" fontSize="20px" px={1} color="white"> 
-            0 / {course.max_subscriptions} places
-          </Typography>
-        </Box>
-        {/* {logs()} */}
       </Box>
+      <Typography align="center" fontSize="22px" color="white" py={0.3} px={0.6}>
+        {parseDate(course.date)}, 
+        <Tooltip title={<h3>{structure.address}</h3>}>
+          <span className="bold"> au {structure.name} </span>
+        </Tooltip>
+      </Typography>
+
+      <Box className="footer" gap={1}>
+        <Button variant="contained"  sx={{bgcolor: theme.color}}  onClick={handleSub}>
+          {isSubscribed(course) ? "Annuler" : "S'inscrire"}
+        </Button>
+        <Typography align="center" fontSize="20px" px={1} color="white"> 
+          0 / {course.max_subscriptions} places
+        </Typography>
+      </Box>
+    </Box>
   )
 }
 

@@ -3,7 +3,7 @@ json.courses @courses do |course|
   json.collective course.collective
   json.reservation course.reservation
   json.date course.date
-  json.date_in_later course.date_in_letter
+  json.date_in_letter course.date_in_letter
   json.max_subscriptions course.max_subscriptions
   
   json.initiation_id course.initiation_id

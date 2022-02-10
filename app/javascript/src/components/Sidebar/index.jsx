@@ -16,7 +16,7 @@ const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [toggled, setToggled] = useState(false);
 
-  const {user, signout} = useAuth()
+  const {user, signout, subscriptions} = useAuth()
 
   const handleCollapsedChange = () => {
     setCollapsed(!collapsed);
@@ -67,8 +67,8 @@ const Sidebar = () => {
                 title="Compte" 
                 icon={<MenuIcon  />}
               >
-              <MenuItem>Profile</MenuItem>
-              <MenuItem onClick={signout}>Déconnection</MenuItem>
+                <MenuItem>Profile</MenuItem>
+                <MenuItem onClick={signout}>Déconnection</MenuItem>
               </SubMenu>
               :
               <MenuItem icon={<MenuIcon  />}>
@@ -82,6 +82,7 @@ const Sidebar = () => {
       </ProSidebar>
 
       {user  && console.log("user",user)}
+      {subscriptions  && console.log("subscriptions",subscriptions)}
 
       {/* button to display when sidebar is toggleed */}
       <IconButton 

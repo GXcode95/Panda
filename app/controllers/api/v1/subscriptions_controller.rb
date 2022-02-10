@@ -3,7 +3,7 @@ class Api::V1::SubscriptionsController < ApplicationController
   respond_to :json
 
   def index
-    @subscriptions = Subscription.all
+    @subscriptions = Subscription.where(user_id: current_user.id)
   end
 
   def create 

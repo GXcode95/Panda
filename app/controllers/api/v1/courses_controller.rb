@@ -6,10 +6,10 @@ class Api::V1::CoursesController < ApplicationController
     @themes = Theme.all
     @structures = Structure.all
     @initiations = Initiation.all
-    respond_to do |format|
-      format.json 
-    end
 
+    p "%"*100
+    # p current_user.build
+    p "%"*100
   end
 
 end
