@@ -81,6 +81,8 @@ const Sidebar = () => {
         </SidebarContent>
       </ProSidebar>
 
+      {user  && console.log("user",user)}
+
       {/* button to display when sidebar is toggleed */}
       <IconButton 
         onClick={handleToggleSidebar}

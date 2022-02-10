@@ -1,7 +1,7 @@
-import React from 'react';
-import { ProvideAuth } from './hooks/useAuth';
+import React from 'react'
+import { ProvideAuth } from './hooks/useAuth'
 import Routes from './Routes'
-import Sidebar from './components/Sidebar';
+import Sidebar from './components/Sidebar'
 
 
 import './styles/index.scss'
@@ -15,6 +15,6 @@ const App = () => {
       </div>
     </ProvideAuth>
   </div>
-};
+}
 
-export default App;
+export default App

@@ -58,7 +58,7 @@ const useProvideAuth = ()  => {
       const response = await axios.post('/users/sign_in', {user})
       if (response.headers.authorization) 
         Cookies.set("jwt", response.headers.authorization)
-
+      
       setUser(response.data.user)
       navigate('/')
     } catch (error){
@@ -96,6 +96,7 @@ const useProvideAuth = ()  => {
           },
         })
         setUser(data.user)
+        console.log("user", data.user)
       }
       loginWithToken()
     } catch (error) { /* handleError(error) */ }

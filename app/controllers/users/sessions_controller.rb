@@ -1,7 +1,7 @@
 class Users::SessionsController < Devise::SessionsController
   skip_before_action :verify_authenticity_token
   # This prevent to get redirected when request for signin
-  prepend_before_action :require_no_authentication
+  skip_before_action :require_no_authentication, only: [:new, :create]
 
   respond_to :json
   private

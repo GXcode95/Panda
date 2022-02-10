@@ -1,0 +1,1 @@
+json.message "Inscription validé."

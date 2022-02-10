@@ -26,9 +26,9 @@ const CourseCard = ({course, theme, structure, initiation}) => {
   }
 
   const handleSub = async () => {
-    const res = await axios.post('/api/v1/subscriptions', {
+    const res = await axios.post('/api/v1/subscriptions.json', {
       subscription: {
-        course_id: 68
+        course_id: course.id
       }
     })
     console.log("response",res)
