@@ -1,68 +1,37 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Button, Typography, Tooltip } from '@mui/material'
-import axios from 'axios'
 import { useAuth } from '../../hooks/useAuth'
 
 import { useCourseData } from '../../hooks/useCourse'
-const errorMessage = (error, defaultMessage) => {
-  const noResponseFromServer = "Une erreur est survenue, veuillez réessayer dans quelques minutes."
 
-  if(error.response)
-    error.response.data ? alert(error.response.data.error) : alert(defaultMessage)
-  else
-    alert(noResponseFromServer)
-}
+
 
 const CourseCard = ({courseId, theme, structure, initiation}) => {
-  const { user,  subscriptions, getSubscriptions } = useAuth()
+  const { user} = useAuth()
   const [course, setCourse] = useState()
-  const { getOneCourse } = useCourseData()
+  const { getOneCourse, subscribe, unsubscribe} = useCourseData()
 
   const isSubscribed = () => {
     return course.subscribers.includes(user.id)
   }
 
-  const handleSub = async () => {
-    try {
-      const {data} = await axios.post('/api/v1/subscriptions.json', {
-        subscription: {
-          course_id: course.id
-        }
-      })
-      if(data.error){
-        alert(data.error)
-      } else {
-        alert(data.message)
-        getCourseInfo()
-      }
-    } catch (error) {
-      errorMessage(error, "Inscription impossible, veuillez réesayer dans quelques minutes.")
-    }
-      
+  const handleSubcribe = async () => {
+    const courseUpdate = await subscribe(courseId)
+    if (courseUpdate)
+      setCourse(courseUpdate)
   }
 
-  const handleUnsub = async () => {
-    try {
-      const subscriptionId = subscriptions.find(sub => sub.course_id === course.id).id
-      const {data} = await axios.delete(`/api/v1/subscriptions/${subscriptionId}.json`)
-      if(data.error){
-        alert(data.error)
-      } else {
-        alert(data.message)
-        getCourseInfo()
-
-      }
-    } catch (error) {
-      errorMessage(error, "Une erreur est survenue")
-    }
-      
+  const handleUnsubscribe = async () => {
+    const courseUpdate = await unsubscribe(courseId)
+    if (courseUpdate)
+      setCourse(courseUpdate)
   }
   
-  const getCourseInfo = async () =>  {
-    setCourse( await getOneCourse(courseId))
-  }
   useEffect(()=> {
-    getCourseInfo()
+    const handleGetOneCourse = async () =>  {
+      setCourse( await getOneCourse(courseId))
+    }
+    handleGetOneCourse()
   }, [])
   
 
@@ -86,7 +55,7 @@ const CourseCard = ({courseId, theme, structure, initiation}) => {
         <Button 
           variant="contained"
           sx={{bgcolor: theme.color}}
-          onClick={isSubscribed(course) ? handleUnsub : handleSub}
+          onClick={isSubscribed(course) ? handleUnsubscribe : handleSubcribe}
           >
           {isSubscribed(course) ? "Annuler" : "S'inscrire"}
         </Button>
