@@ -45,6 +45,38 @@ const useProvideCourseData = () => {
     return response.data.course
   }
 
+  const subscribe = async (courseId) => {
+    try {
+      const {data} = await axios.post('/api/v1/subscriptions.json', {
+        subscription: {
+          course_id: courseId
+        }
+      })
+      if(data.error){
+        alert(data.error)
+      } else {
+        alert(data.message)
+        return getOneCourse(courseId)
+      }
+    } catch (error) {
+      errorMessage(error, "Inscription impossible, veuillez réesayer dans quelques minutes.")
+    }
+  }
+
+  const unsubscribe = async (courseId) => {
+    try {
+      const {data} = await axios.delete(`/api/v1/subscriptions/${courseId}.json`)
+      if(data.error){
+        alert(data.error)
+      } else {
+        alert(data.message)
+        return getOneCourse(courseId)
+      }
+    } catch (error) {
+      errorMessage(error, "Inscription impossible, veuillez réesayer dans quelques minutes.")
+    }
+  }
+
   useEffect(()=> {
     getCourses()
     getThemes()
@@ -62,6 +94,8 @@ const useProvideCourseData = () => {
     getThemes,
     getStructures,
     getInitiations,
+    unsubscribe,
+    subscribe,
   }
 }
 

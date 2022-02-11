@@ -14,48 +14,55 @@ const errorMessage = (error, defaultMessage) => {
 }
 
 const CourseCard = ({courseId, theme, structure, initiation}) => {
-  const { user,  subscriptions, getSubscriptions } = useAuth()
+  const { user} = useAuth()
   const [course, setCourse] = useState()
-  const { getOneCourse } = useCourseData()
+  const { getOneCourse, subscribe, unsubscribe} = useCourseData()
 
   const isSubscribed = () => {
     return course.subscribers.includes(user.id)
   }
 
   const handleSub = async () => {
-    try {
-      const {data} = await axios.post('/api/v1/subscriptions.json', {
-        subscription: {
-          course_id: course.id
-        }
-      })
-      if(data.error){
-        alert(data.error)
-      } else {
-        alert(data.message)
-        getCourseInfo()
-      }
-    } catch (error) {
-      errorMessage(error, "Inscription impossible, veuillez réesayer dans quelques minutes.")
-    }
+    // try {
+    //   const {data} = await axios.post('/api/v1/subscriptions.json', {
+    //     subscription: {
+    //       course_id: course.id
+    //     }
+    //   })
+    //   if(data.error){
+    //     alert(data.error)
+    //   } else {
+    //     alert(data.message)
+    //     console.log(data)
+    //     getCourseInfo()
+    //   }
+    // } catch (error) {
+    //   errorMessage(error, "Inscription impossible, veuillez réesayer dans quelques minutes.")
+    // }
+
+    const courseUpdate = await subscribe(courseId)
+    if (courseUpdate)
+      setCourse(courseUpdate)
       
   }
 
   const handleUnsub = async () => {
-    try {
-      const subscriptionId = subscriptions.find(sub => sub.course_id === course.id).id
-      const {data} = await axios.delete(`/api/v1/subscriptions/${subscriptionId}.json`)
-      if(data.error){
-        alert(data.error)
-      } else {
-        alert(data.message)
-        getCourseInfo()
+    // try {
+    //   const subscriptionId = subscriptions.find(sub => sub.course_id === course.id).id
+    //   const {data} = await axios.delete(`/api/v1/subscriptions/${courseId}.json`)
+    //   if(data.error){
+    //     alert(data.error)
+    //   } else {
+    //     alert(data.message)
+    //     getCourseInfo()
 
-      }
-    } catch (error) {
-      errorMessage(error, "Une erreur est survenue")
-    }
-      
+    //   }
+    // } catch (error) {
+    //   errorMessage(error, "Une erreur est survenue")
+    // }
+    const courseUpdate = await unsubscribe(courseId)
+    if (courseUpdate)
+      setCourse(courseUpdate)
   }
   
   const getCourseInfo = async () =>  {

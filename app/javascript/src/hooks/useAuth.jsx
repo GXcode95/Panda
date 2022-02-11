@@ -20,7 +20,6 @@ export const useAuth = () => {
 // Provider hook that creates auth object and handles state
 const useProvideAuth = ()  => {
   const [user, setUser] = useState(null);
-  const [subscriptions, setSubscriptions] = useState(null);
   const navigate = useNavigate()
   
   const errorMessage = (error, defaultMessage) => {
@@ -32,7 +31,7 @@ const useProvideAuth = ()  => {
       alert(noResponseFromServer)
   }
   
-  // All methods related to auth here, have to update the user 
+  
   const signup = async (email, password, passwordConfirmation) => {
     if(password != passwordConfirmation) {
       alert("Le mot de passe et la confirmation du mot de passe sont différents.")
@@ -84,18 +83,13 @@ const useProvideAuth = ()  => {
     }
   }
 
-  //? Neccessary ?
-  const getSubscriptions = async () => {
-    try {
-      const {data} = await axios.get('/api/v1/subscriptions.json')
-      setSubscriptions(data.subscriptions)
-    } catch  (error) { /* handleError(error) */}
-  }
-
   const isSubscribed = (course) => {
     return subscriptions.map(subscription => subscription.course_id).includes(course.id)
   }
-  // Connect user with JWT is a jwt is set in cookies
+
+
+
+  // Connect user with JWT if a jwt is set in cookies
   useLayoutEffect(() => {
     const jwt = Cookies.get("jwt")
     if (!jwt) return
@@ -108,8 +102,6 @@ const useProvideAuth = ()  => {
           },
         })
         setUser(data.user)
-        console.log("user", data.user)
-        getSubscriptions()
       }
       loginWithToken()
     } catch (error) {  handleError(error) }
@@ -121,8 +113,6 @@ const useProvideAuth = ()  => {
     signup,
     signin,
     signout,
-    subscriptions,
-    getSubscriptions,
     isSubscribed,
   };
 
