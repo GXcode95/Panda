@@ -30,5 +30,20 @@ class Course < ApplicationRecord
     subscribers.length === self.max_subscriptions
   end
 
+  def self.search(params)
+    queries = []
+    queries << "collective = true" if params[:collective]
+    if queries.any?
+      queryString = ""
+      queries.each_with_index do |query, i|
+        queryString += query
+        queryString += " AND " unless i === queries.length - 1
+      end
+
+      self.all.where(queryString).order(date: :asc) 
+    else
+      self.all.order(date: :asc)
+    end
+  end
 
 end

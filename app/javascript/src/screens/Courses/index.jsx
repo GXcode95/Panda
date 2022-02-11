@@ -1,8 +1,8 @@
 import React, { useEffect, useLayoutEffect, useState } from "react"
 import Research from "../../components/CourseResearch"
 import CourseCard from '../../components/CourseCard'
-import axios from "axios"
 import { useCourseData } from "../../hooks/useCourse"
+import CourseTabs from "../../components/CourseTabs"
 
 const Courses = () => {
   const {courses, themes, structures, initiations} = useCourseData()
@@ -33,6 +33,7 @@ const Courses = () => {
     { courses && 
     <div className='container'>
       <h1> Courses </h1>
+      <CourseTabs />
      <div className='courses-wrapper' >
 
       {courses.map(course => 

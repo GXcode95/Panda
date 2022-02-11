@@ -25,8 +25,8 @@ const useProvideCourseData = () => {
     setThemes(themesResponse.data)
   }
 
-  const getCourses = async () => {
-    const coursesResponse = await axios.get('/api/v1/courses.json')
+  const getCourses = async (params) => {
+    const coursesResponse = await axios.get('/api/v1/courses.json', {params})
     setCourses(coursesResponse.data.courses)
   }
 

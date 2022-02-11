@@ -1,8 +1,12 @@
 class Api::V1::CoursesController < ApplicationController
   respond_to :json
   
-  def index
-    @courses = Course.all.order(date: :asc)
+  def index 
+    if params[:userCourses]
+      @courses = current_user.courses
+    else
+      @courses = Course.search(params)
+    end
   end
 
   def show
