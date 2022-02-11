@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Button, Typography, Tooltip } from '@mui/material'
 import axios from 'axios'
 import { useAuth } from '../../hooks/useAuth'
 
-
+import { useCourseData } from '../../hooks/useCourse'
 const errorMessage = (error, defaultMessage) => {
   const noResponseFromServer = "Une erreur est survenue, veuillez réessayer dans quelques minutes."
 
@@ -12,22 +12,15 @@ const errorMessage = (error, defaultMessage) => {
   else
     alert(noResponseFromServer)
 }
-const parseDate = (strDate) => {
-  const months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
-  'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
-  
-  // the server give a string date so with create a JS Date object
-  const date = new Date(strDate)
-  // get the month name  
-  const month = months[date.getMonth() - 1]
-  // get the day number
-  const day = date.getDate()
 
-  return `Le ${day} ${month}`
-}
+const CourseCard = ({courseId, theme, structure, initiation}) => {
+  const { user,  subscriptions, getSubscriptions } = useAuth()
+  const [course, setCourse] = useState()
+  const { getOneCourse } = useCourseData()
 
-const CourseCard = ({course, theme, structure, initiation}) => {
-  const { isSubscribed, subscriptions, getSubscriptions } = useAuth()
+  const isSubscribed = () => {
+    return course.subscribers.includes(user.id)
+  }
 
   const handleSub = async () => {
     try {
@@ -40,7 +33,7 @@ const CourseCard = ({course, theme, structure, initiation}) => {
         alert(data.error)
       } else {
         alert(data.message)
-        getSubscriptions()
+        getCourseInfo()
       }
     } catch (error) {
       errorMessage(error, "Inscription impossible, veuillez réesayer dans quelques minutes.")
@@ -56,15 +49,24 @@ const CourseCard = ({course, theme, structure, initiation}) => {
         alert(data.error)
       } else {
         alert(data.message)
-        getSubscriptions()
+        getCourseInfo()
+
       }
     } catch (error) {
       errorMessage(error, "Une erreur est survenue")
     }
       
   }
+  
+  const getCourseInfo = async () =>  {
+    setCourse( await getOneCourse(courseId))
+  }
+  useEffect(()=> {
+    getCourseInfo()
+  }, [])
+  
 
-  return (
+  return course ? (
     <Box className="CourseCard" borderColor={theme.color} bgcolor={theme.color}>
       <Box className="title" bgcolor={theme.color} borderColor={theme.color}  p={1}>
         <div className="overlay"/>
@@ -72,10 +74,11 @@ const CourseCard = ({course, theme, structure, initiation}) => {
           {initiation.name}
         </Typography>
       </Box>
+
       <Typography align="center" fontSize="22px" color="white" py={0.3} px={0.6}>
-        {parseDate(course.date)}, 
+        {course.date_in_letter}, 
         <Tooltip title={<h3>{structure.address}</h3>}>
-          <span className="bold"> au {structure.name} </span>
+          <span className="bold"> {structure.name} </span>
         </Tooltip>
       </Typography>
 
@@ -88,11 +91,11 @@ const CourseCard = ({course, theme, structure, initiation}) => {
           {isSubscribed(course) ? "Annuler" : "S'inscrire"}
         </Button>
         <Typography align="center" fontSize="20px" px={1} color="white"> 
-          0 / {course.max_subscriptions} places
+          {course.subscribers.length} / {course.max_subscriptions} places
         </Typography>
       </Box>
     </Box>
-  )
+  ) : <div></div>
 }
 
 export default CourseCard

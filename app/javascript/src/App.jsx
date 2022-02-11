@@ -5,14 +5,17 @@ import Sidebar from './components/Sidebar'
 
 
 import './styles/index.scss'
+import { ProvideCourseData } from './hooks/useCourse'
 
 const App = () => {  
   return <div className="App">
     <ProvideAuth>
-      <Sidebar />
-      <div className="main-container">
-        <Routes />
-      </div>
+      <ProvideCourseData>
+        <Sidebar />
+        <div className="main-container">
+          <Routes />
+        </div>
+      </ProvideCourseData>
     </ProvideAuth>
   </div>
 }

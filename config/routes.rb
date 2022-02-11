@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   
   namespace :api do
     namespace :v1 do
-      resources :courses, only: [:index]
+      resources :courses, only: [:index, :show]
       resources :subscriptions, only: [:index, :create, :destroy, :delete]
       resources :structures, only: [:index]
       resources :themes, only: [:index]
