@@ -22,7 +22,7 @@ const CourseCard = ({courseId, theme, structure, initiation}) => {
   }
 
   const handleUnsubscribe = async () => {
-    const courseUpdate = await unsubscribe(courseId)
+     const courseUpdate = await unsubscribe(courseId)
     if (courseUpdate)
       setCourse(courseUpdate)
   }
@@ -55,7 +55,7 @@ const CourseCard = ({courseId, theme, structure, initiation}) => {
         <Button 
           variant="contained"
           sx={{bgcolor: theme.color}}
-          onClick={isSubscribed(course) ? handleUnsubscribe : handleSubcribe}
+          onClick={isSubscribed(course) ? handleUnsubscribe  : handleSubcribe}
           >
           {isSubscribed(course) ? "Annuler" : "S'inscrire"}
         </Button>
