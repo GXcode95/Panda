@@ -59,6 +59,7 @@ const CourseCard = ({courseId, theme, structure, initiation}) => {
           >
           {isSubscribed(course) ? "Annuler" : "S'inscrire"}
         </Button>
+        
         <Typography align="center" fontSize="20px" px={1} color="white"> 
           {course.subscribers.length} / {course.max_subscriptions} places
         </Typography>

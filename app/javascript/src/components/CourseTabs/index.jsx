@@ -8,14 +8,14 @@ const CourseTabs = () => {
 
   const handleChange = async (event, newValue) => {
     setValue(newValue)
-    if(newValue === 0) 
-      getCourses({collective: true})
-
     if(newValue === 1) 
-      getCourses({collective: false})
+      getCourses({collectives: true})
 
-    if(newValue === 2)
-      getCourses({userCourses: true})
+    if(newValue === 2) 
+      getCourses({individuals: true})
+
+    if(newValue === 3)
+      getCourses({me: true})
     
   }
 
@@ -29,9 +29,10 @@ const CourseTabs = () => {
   return (
     <Box sx={{ borderBottom: 1, borderColor: 'divider' }} >
       <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
-        <Tab label="Collectif" {...a11yProps(0)} />
-        <Tab label="Individuel" {...a11yProps(1)} />
-        <Tab label="Mes sessions" {...a11yProps(2)} />
+        <Tab label="Tous" {...a11yProps(0)} />
+        <Tab label="Collectives" {...a11yProps(1)} />
+        <Tab label="Individuelles" {...a11yProps(2)} />
+        <Tab label="Mes sessions" {...a11yProps(3)} />
       </Tabs>
     </Box>
   )

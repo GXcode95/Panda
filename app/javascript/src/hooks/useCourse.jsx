@@ -19,14 +19,19 @@ const useProvideCourseData = () => {
   const [themes, setThemes] = useState()
   const [structures, setStructures] = useState()
   const [initiations, setInitiations] = useState()
-  
+  const [themeQueries, setThemeQueries] = useState([])
+
   const getThemes = async () => {
     const themesResponse = await axios.get('/api/v1/themes.json')
     setThemes(themesResponse.data)
   }
 
-  const getCourses = async (params) => {
-    const coursesResponse = await axios.get('/api/v1/courses.json', {params})
+  const getCourses = async (params={}) => {
+    if (themeQueries.length > 0)
+      params.themes = themeQueries
+
+    const coursesResponse = await axios.get('/api/v1/courses.json', { params } )
+    console.log("Courses request => ", coursesResponse.data)
     setCourses(coursesResponse.data.courses)
   }
 
@@ -77,8 +82,22 @@ const useProvideCourseData = () => {
     }
   }
 
+  const handleThemesQueries = (themeId) => {
+    let tmpQueries = []
+    if (themeQueries.includes(themeId)) {
+      tmpQueries = themeQueries.filter(id => id != themeId)
+    } else {
+      tmpQueries = [...themeQueries, themeId]
+    }
+    console.log("queries theme id:", tmpQueries)
+    setThemeQueries(tmpQueries)
+  }
+
   useEffect(()=> {
     getCourses()
+  }, [themeQueries])
+
+  useEffect(()=> {
     getThemes()
     getStructures()
     getInitiations()
@@ -96,6 +115,7 @@ const useProvideCourseData = () => {
     getInitiations,
     unsubscribe,
     subscribe,
+    handleThemesQueries
   }
 }
 

@@ -6,6 +6,9 @@ class Course < ApplicationRecord
   has_many :users, through: :subscriptions
   has_one :theme, through: :initiation
 
+  scope :collectives, -> { where(collective: true) }
+  scope :individuals, -> { where(collective: false) }
+
   def date_in_letter
     date.strftime("%A") + " " + date.day.to_s + " " + date.strftime("%B") 
   end
@@ -31,19 +34,21 @@ class Course < ApplicationRecord
   end
 
   def self.search(params)
-    queries = []
-    queries << "collective = true" if params[:collective]
-    if queries.any?
-      queryString = ""
-      queries.each_with_index do |query, i|
-        queryString += query
-        queryString += " AND " unless i === queries.length - 1
-      end
+    sorted = self.order(date: :asc)
 
-      self.all.where(queryString).order(date: :asc) 
-    else
-      self.all.order(date: :asc)
+    if params[:themes]
+      sorted = sorted.joins(:theme).where(theme: {id: params[:themes]})
     end
+
+    if params[:structures]
+      sorted = sorted.where(strucutre_id: params[:structure])
+    end
+
+    if params[:initiations]
+      sorted = sorted.where(initiaiton_id: params[:initiations])
+    end
+
+    sorted
   end
 
 end
