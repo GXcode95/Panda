@@ -1,10 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { 
+  createContext,
+  useContext,
+  useEffect,
+  useState } from 'react'
 import axios from 'axios'
-import Cookies from 'js-cookie'
 
 export const CourseDataContext = createContext()
-
 export const ProvideCourseData = ({ children }) => {
   const courseData = useProvideCourseData()
   return <CourseDataContext.Provider value={courseData}>{children}</CourseDataContext.Provider>
@@ -19,27 +20,30 @@ const useProvideCourseData = () => {
   const [themes, setThemes] = useState()
   const [structures, setStructures] = useState()
   const [initiations, setInitiations] = useState()
-  const [themeQueries, setThemeQueries] = useState([])
 
-  const getThemes = async () => {
-    const themesResponse = await axios.get('/api/v1/themes.json')
-    setThemes(themesResponse.data)
-  }
+  const [themeQueries, setThemeQueries] = useState([])
+  const [structureQueries, setStructureQueries] = useState([])
+  const [initiationQueries, setInitiationQueries] = useState([])
 
   const getCourses = async (params={}) => {
     if (themeQueries.length > 0)
       params.themes = themeQueries
+    if (structureQueries.length > 0)
+      params.structures = structureQueries
+    if (initiationQueries.length > 0)  
+      params.initiations = initiationQueries
 
     const coursesResponse = await axios.get('/api/v1/courses.json', { params } )
-    console.log("Courses request => ", coursesResponse.data)
     setCourses(coursesResponse.data.courses)
   }
-
+  const getThemes = async () => {
+    const themesResponse = await axios.get('/api/v1/themes.json')
+    setThemes(themesResponse.data)
+  }
   const getStructures = async () => {
     const structuresResponse = await axios.get('/api/v1/structures.json')
     setStructures(structuresResponse.data)
   }
-
   const getInitiations = async () => {
     const initiationsResponse = await axios.get('/api/v1/initiations.json')
     setInitiations(initiationsResponse.data)
@@ -67,7 +71,6 @@ const useProvideCourseData = () => {
       errorMessage(error, "Inscription impossible, veuillez réesayer dans quelques minutes.")
     }
   }
-
   const unsubscribe = async (courseId) => {
     try {
       const {data} = await axios.delete(`/api/v1/subscriptions/${courseId}.json`)
@@ -89,13 +92,30 @@ const useProvideCourseData = () => {
     } else {
       tmpQueries = [...themeQueries, themeId]
     }
-    console.log("queries theme id:", tmpQueries)
     setThemeQueries(tmpQueries)
+  }
+  const handleStructureQueries = (structureId) => {
+    let tmpQueries = []
+    if (structureQueries.includes(structureId)) {
+      tmpQueries = structureQueries.filter(id => id != structureId)
+    } else {
+      tmpQueries = [...structureQueries, structureId]
+    }
+    setStructureQueries(tmpQueries)
+  }
+  const handleInitiationQueries = (initiationId) => {
+    let tmpQueries = []
+    if (initiationQueries.includes(initiationId)) {
+      tmpQueries = initiationQueries.filter(id => id != initiationId)
+    } else {
+      tmpQueries = [...initiationQueries, initiationId]
+    }
+    setInitiationQueries(tmpQueries)
   }
 
   useEffect(()=> {
     getCourses()
-  }, [themeQueries])
+  }, [themeQueries, structureQueries, initiationQueries])
 
   useEffect(()=> {
     getThemes()
@@ -110,12 +130,11 @@ const useProvideCourseData = () => {
     initiations,
     getCourses,
     getOneCourse,
-    getThemes,
-    getStructures,
-    getInitiations,
     unsubscribe,
     subscribe,
-    handleThemesQueries
+    handleThemesQueries,
+    handleStructureQueries,
+    handleInitiationQueries
   }
 }
 

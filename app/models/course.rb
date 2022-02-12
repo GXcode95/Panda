@@ -41,11 +41,11 @@ class Course < ApplicationRecord
     end
 
     if params[:structures]
-      sorted = sorted.where(strucutre_id: params[:structure])
+      sorted = sorted.where(structure_id: params[:structures])
     end
 
     if params[:initiations]
-      sorted = sorted.where(initiaiton_id: params[:initiations])
+      sorted = sorted.where(initiation_id: params[:initiations])
     end
 
     sorted
