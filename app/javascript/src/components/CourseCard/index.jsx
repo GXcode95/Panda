@@ -36,34 +36,40 @@ const CourseCard = ({courseId, theme, structure, initiation}) => {
   
 
   return course ? (
-    <Box className="CourseCard" borderColor={theme.color} bgcolor={theme.color}>
-      <Box className="title" bgcolor={theme.color} borderColor={theme.color}  p={1}>
-        <div className="overlay"/>
-        <Typography align="center" fontSize="22px" color="white">
+    <Box className="CourseCard"  bgcolor={theme.color}>
+      <Box className="title" bgcolor={theme.color}>
+        <Typography 
+          align="center" 
+          fontSize="22px"
+          color="white"
+          padding="0.3rem 0.5rem"
+        >
           {initiation.name}
         </Typography>
       </Box>
-
-      <Typography align="center" fontSize="22px" color="white" py={0.3} px={0.6}>
-        {course.date_in_letter}, 
-        <Tooltip title={<h3>{structure.address}</h3>}>
-          <span className="bold"> {structure.name} </span>
-        </Tooltip>
-      </Typography>
-
-      <Box className="footer" gap={1}>
-        <Button 
-          variant="contained"
-          sx={{bgcolor: theme.color}}
-          onClick={isSubscribed(course) ? handleUnsubscribe  : handleSubcribe}
-          >
-          {isSubscribed(course) ? "Annuler" : "S'inscrire"}
-        </Button>
-        
-        <Typography align="center" fontSize="20px" px={1} color="white"> 
-          {course.subscribers.length} / {course.max_subscriptions} places
+      <div className="body" 
+        style={{borderColor: theme.color}}>
+        <Typography align="center" fontSize="16px" color="white">
+          {course.date_in_letter}, 
+          <Tooltip title={<h3>{structure.address}</h3>}>
+            <span className="bold"> {structure.name} </span>
+          </Tooltip>
         </Typography>
+
+        <Box className="footer" gap={1}>
+          <Button 
+            variant="contained"
+            sx={{bgcolor: "white", color: '#242424'}}
+            onClick={isSubscribed(course) ? handleUnsubscribe  : handleSubcribe}
+            >
+            {isSubscribed(course) ? "Annuler" : "S'inscrire"}
+          </Button>
+          
+          <Typography align="center" fontSize="20px" px={1} color="white"> 
+            {course.subscribers.length} / {course.max_subscriptions} places
+          </Typography>
       </Box>
+      </div>
     </Box>
   ) : <div></div>
 }

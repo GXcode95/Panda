@@ -15,8 +15,9 @@ const Research = () => {
   //   return shortName.join(' ')
   // }
   
-  const handleClickTheme = (id) => {
+  const handleClickTheme = (e, id) => {
     handleThemesQueries(id)
+    e.target.classList.toggle("selected")
   }
 
   const handleClickStructure = (id) => {
@@ -30,9 +31,9 @@ const Research = () => {
 
   return (
     <div className="Research">
-      <button onClick={e => handleClickTheme(1)}> theme1 </button>
-      <button onClick={e => handleClickTheme(2)}> theme2 </button>
-      <button onClick={e => handleClickTheme(4)}> theme4 </button>
+      <button onClick={e => handleClickTheme(e,1)}> theme1 </button>
+      <button onClick={e => handleClickTheme(e,2)}> theme2 </button>
+      <button onClick={e => handleClickTheme(e,4)}> theme4 </button>
       
       <button onClick={e => handleClickStructure(1)}> structure1 </button>
       <button onClick={e => handleClickStructure(2)}> structure2 </button>
